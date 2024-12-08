@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRUPNfO9kV+2cxrN2D7K9hG8GA5r3ERLPB8N1LlA"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="/css/styles.css" />
+		<title>Task Manager</title>
+	</head>
+	<body>
+		<div class="container mt-4">
+			<!-- Page Title -->
+			<h1 class="text-primary text-center mb-4">Task Manager</h1>
+
+			<!-- Add Task Button -->
+			<div class="text-center mb-4">
+				<a href="/tasks/add" class="btn btn-primary btn-lg add-task-btn"
+					>Add Task</a
+				>
+			</div>
+			
+			<ul class="list-group">
+				<!-- Loop through each task in the tasks array -->
+				<% foundTask.forEach((Task) => { %>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<div>
+							<!-- Display the task title and status -->
+							<strong><%= Task.title %></strong> - <%= Task.status %>
+			
+							<!-- Display the category name if the task has a category -->
+							<%= Task.category  %>
+
+			
+							<!-- Display the assigned user's name if the task has a user -->
+							
+								- Assigned to: 
+								<!-- Match the user ID from the task to find the user's name -->
+								<%= Task.user %>
+								<!-- Default text if no user is assigned -->
+								- (Unassigned)
+						</div>
+						<div>
+							<!-- Edit button redirects to the Edit Task page -->
+							<a href="/tasks/<%= Task.id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+			
+							<!-- Delete button sends a DELETE request for the task -->
+							<form
+								action="/tasks/<%= Task.id %>?_method=DELETE"
+								method="POST"
+								class="d-inline"
+							>
+								<button
+									type="submit"
+									class="btn btn-danger btn-sm"
+									onclick="return confirm('Are you sure you want to delete this task?');"
+								>
+									Delete
+								</button>
+							</form>
+						</div>
+					</li>
+				<% }) %>
+			</ul>			
+	</body>
+</html>

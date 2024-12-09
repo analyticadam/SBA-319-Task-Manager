@@ -18,8 +18,8 @@
 			<h1 class="text-primary text-center mb-4">Add a New Task</h1>
 
 			<!-- Form for Adding a New Task -->
+			<!-- Task Title -->
 			<form action="/tasks" method="POST">
-				<!-- Task Title -->
 				<div class="mb-3">
 					<label for="title" class="form-label">Title:</label>
 					<input
@@ -45,12 +45,14 @@
 				</div>
 
 				<!-- Task Status -->
+
 				<div class="mb-3">
-					Status: {this.props.task.status ? (
-					<input type="checkbox" name="status" />
-					) : (
-					<input type="checkbox" name="status" />
-					)}
+					<label>
+						<input type="radio" name="status" value="Pending" checked />Pending
+					</label>
+					<label>
+						<input type="radio" name="status" value="Completed" />Completed
+					</label>
 				</div>
 
 				<!-- Task Due Date -->

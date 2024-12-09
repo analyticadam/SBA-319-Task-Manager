@@ -102,7 +102,7 @@ app.get("/tasks/:id", (req, res) => {
 app.post("/tasks", async (req, res) => {
 	// Destructure the task fields from the request body
 	const { title, description, status, dueDate, category, user } = req.body;
-
+	console.log(req.body);
 	// Validation: Ensure required fields (title and dueDate) are provided
 	if (!title || !dueDate) {
 		// If validation fails, respond with a 400 status and error message
@@ -110,27 +110,24 @@ app.post("/tasks", async (req, res) => {
 	}
 
 	// Create a new task object with the provided data
-	if (req.body.status === "on") {
-		req.body.status = true;
-	} else {
-		req.body.status = false;
-	}
+	// Convert status to a boolean value
+	const taskStatus = status === "on";
 
-	await Task.create([
-		{
+	try {
+		// Create the task with the submitted form data
+		await Task.create({
 			title, // Task title
 			description, // Task description (optional)
-			status, // Default to "Pending" if no status is provided
+			status: status || "Pending", //Default to "Pending" if no status is provided
 			user, // Save the user ID or null if not provided
 			dueDate, // Due date for the task
 			category, // Category for the task (optional, default to null)
-		},
-	]);
-	// Add the new task to the tasks array
-	console.log(req.body);
-	console.log(Task);
-	// Redirect the user to the homepage after successfully adding the task
-	res.status(200).redirect("/"); // Redirect to the home page where tasks are displayed
+		});
+		res.status(200).redirect("/"); //  Redirect to the home page where tasks are displayed
+	} catch (error) {
+		console.error("Error creating task:", error.message);
+		res.status(500).send("An error occured while creating this task.");
+	}
 });
 
 // PUT: Update an existing task by ID

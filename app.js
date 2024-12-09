@@ -169,22 +169,24 @@ app.get("/tasks/:id/edit", (req, res) => {
 });
 
 // DELETE: Delete a task by ID
-app.delete("/tasks/:id", (req, res) => {
+app.delete("/tasks/:id", async (req, res) => {
 	console.log("DELETE /tasks/:id called with ID:", req.params.id); // Log route call
 
 	const { id } = req.params; // Extract task ID from request parameters
+	try {
+		// Filter out the task with the given ID in Mongoose DB
+		const deletedTask = await Task.findByIdAndDelete(id);
 
-	// Filter out the task with the given ID
-	const updatedTasks = tasks.filter((task) => task.id != id);
-
-	if (tasks.length > updatedTasks.length) {
-		tasks = updatedTasks; // Update the in-memory tasks array
-		saveData("tasks.js", tasks); // Save the updated tasks array to tasks.js
-		console.log(`Task with ID ${id} deleted.`); // Log success
-		res.redirect("/"); // Redirect to the homepage after deletion
-	} else {
-		console.log(`Task with ID ${id} not found.`); // Log failure
-		res.status(404).send("Task not found");
+		if (deletedTask) {
+			console.log(`Task with ID ${id} deleted.`); // Log success
+			res.redirect("/"); // Redirect to the homepage after deletion
+		} else {
+			console.log(`Task with ID ${id} not found.`); // Log failure
+			res.status(404).send("Task not found");
+		}
+	} catch (error) {
+		console.error(`Error deleting task: ${error.message}`);
+		res.status(500).send("An error occurred while deleting the task.");
 	}
 });
 

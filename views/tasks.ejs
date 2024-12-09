@@ -18,23 +18,6 @@
 
 			<!-- Task List -->
 			<ul class="list-group">
-				<!-- <% tasks.forEach((Task) => { %> -->
-				<li
-					class="list-group-item d-flex justify-content-between align-items-center"
-				>
-					<!-- <div>
-						<strong><%= Task.title %></strong>: <%= Task.description || "No
-						description" %>
-						<br />
-						<em>Status: <%= Task.status %></em>
-						<% if (Task.category) { %>
-						<br />
-						<em
-							>Category: <%= categories.find((cat) => cat.id ===
-							(Task.category)?.name || "Uncategorized" %></em
-						>
-						<% } %>
-					</div> -->
 					<div>
 						<% tasks.map((Task, i) => { %>
 						<div>
@@ -57,7 +40,7 @@
 						>
 						<form
 							action="/tasks/<%= Task.id %>?_method=DELETE"
-							method="POST"
+							method="DELETE"
 							class="d-inline"
 						>
 							<button

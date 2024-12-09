@@ -26,7 +26,7 @@
 			
 			<ul class="list-group">
 				<!-- Loop through each task in the tasks array -->
-				<% foundTask.forEach((Task) => { %>
+				<% foundTasks.forEach((Task) => { %>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<div>
 							<!-- Display the task title and status -->
@@ -35,6 +35,8 @@
 							<!-- Display the category name if the task has a category -->
 							<%= Task.category  %>
 
+							<!-- Display the Object ID from the MongoDB -->
+							<%= Task._id  %>
 			
 							<!-- Display the assigned user's name if the task has a user -->
 							
@@ -46,7 +48,7 @@
 						</div>
 						<div>
 							<!-- Edit button redirects to the Edit Task page -->
-							<a href="/tasks/<%= Task.id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+							<a href="/tasks/<%= Task._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
 			
 							<!-- Delete button sends a DELETE request for the task -->
 							<form

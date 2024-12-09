@@ -77,12 +77,17 @@ app.get("/tasks/add", (req, res) => {
 
 // GET: Render All Tasks Page
 app.get("/", async (req, res) => {
-	const foundTask = await Task.find({});
-	console.log(foundTask, "boogie");
-	console.log(req.body);
-	console.log(req.params);
-	console.log("GET /tasks called"); // Log the route call
-	res.render("index", { foundTask }); // Render the tasks.ejs template and pass the tasks array
+	try {
+		const foundTasks = await Task.find({}); // Fetch all tasks from the Mongo DB
+		console.log(foundTasks, "boogie");
+		console.log(req.body);
+		console.log(req.params);
+		console.log("GET /tasks called"); // Log the route call
+		res.render("index", { foundTasks }); // Render the tasks.ejs template and pass the tasks array
+	} catch (error) {
+		console.error("Error fetching tasks:", error.message);
+		res.status(500).send("An error occurred while fetching tasks.");
+	}
 });
 
 // GET: Fetch details of a specific task by ID

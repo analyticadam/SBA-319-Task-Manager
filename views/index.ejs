@@ -33,18 +33,15 @@
 							<strong><%= Task.title %></strong> - <%= Task.status %>
 			
 							<!-- Display the category name if the task has a category -->
-							<%= Task.category  %>
+							-<%= Task.category  %>
 
 							<!-- Display the Object ID from the MongoDB -->
 							<%= Task._id  %>
 			
 							<!-- Display the assigned user's name if the task has a user -->
-							
 								- Assigned to: 
 								<!-- Match the user ID from the task to find the user's name -->
 								<%= Task.user %>
-								<!-- Default text if no user is assigned -->
-								- (Unassigned)
 						</div>
 						<div>
 							<!-- Edit button redirects to the Edit Task page -->

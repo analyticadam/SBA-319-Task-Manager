@@ -57,11 +57,11 @@ app.set("views", path.join(__dirname, "views"));
 // 	res.render("index", { Task }); // Render the main page with the tasks array
 // });
 
-// Call Users
-app.get("/users", (req, res) => {
-	console.log("GET /users called");
-	res.json(users);
-});
+// // Call Users
+// app.get("/users", (req, res) => {
+// 	console.log("GET /users called");
+// 	res.json(users);
+// });
 
 // Get Categories
 app.get("/categories", (req, res) => {
@@ -103,75 +103,106 @@ app.get("/tasks/:id", (req, res) => {
 	}
 });
 
-// POST: Create a new task
 app.post("/tasks", async (req, res) => {
-	// Destructure the task fields from the request body
-	const { title, description, status, dueDate, category, user } = req.body;
-	console.log(req.body);
-	// Validation: Ensure required fields (title and dueDate) are provided
-	if (!title || !dueDate) {
-		// If validation fails, respond with a 400 status and error message
-		return res.status(400).send("Title and Due Date are required.");
-	}
-
-	// Create a new task object with the provided data
-	// Convert status to a boolean value
-	const taskStatus = status === "on";
-
 	try {
-		// Create the task with the submitted form data
-		await Task.create({
-			title, // Task title
-			description, // Task description (optional)
-			status: status || "Pending", //Default to "Pending" if no status is provided
-			user, // Save the user ID or null if not provided
-			dueDate, // Due date for the task
-			category, // Category for the task (optional, default to null)
-		});
-		res.status(200).redirect("/"); //  Redirect to the home page where tasks are displayed
-	} catch (error) {
-		console.error("Error creating task:", error.message);
-		res.status(500).send("An error occured while creating this task.");
+		const createdTask = await Task.create(req.body);
+		res.status(200).redirect("/");
+	} catch (err) {
+		res.status(400).send(err);
 	}
 });
 
+// // POST: Create a new task
+// app.post("/tasks", async (req, res) => {
+// 	// Destructure the task fields from the request body
+// 	const { title, description, status, dueDate, category, user, testName } =
+// 		req.body;
+// 	console.log(req.body);
+// 	// Validation: Ensure required fields (title and dueDate) are provided
+// 	if (!title || !dueDate) {
+// 		// If validation fails, respond with a 400 status and error message
+// 		return res.status(400).send("Title and Due Date are required.");
+// 	}
+
+// 	// Create a new task object with the provided data
+// 	// Convert status to a boolean value
+// 	const taskStatus = status === "on";
+
+// 	try {
+// 		// Create the task with the submitted form data
+// 		await Task.create({
+// 			title, // Task title
+// 			description, // Task description (optional)
+// 			status: status || "Pending", //Default to "Pending" if no status is provided
+// 			user, // Save the user ID or null if not provided
+// 			testName, // user name
+// 			dueDate, // Due date for the task
+// 			category, // Category for the task (optional, default to null)
+// 		});
+// 		res.status(200).redirect("/"); //  Redirect to the home page where tasks are displayed
+// 	} catch (error) {
+// 		console.error("Error creating task:", error.message);
+// 		res.status(500).send("An error occured while creating this task.");
+// 	}
+// });
+
 // PUT: Update an existing task by ID
-app.put("/tasks/:id", (req, res) => {
-	const task = tasks.find((t) => t.id === req.params.id);
+app.put("/task/:id", async (req, res) => {
+	try {
+		const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+		});
+		res.status(200).redirect("/");
+	} catch (err) {
+		res.status(400).send(err);
+	}
+});
 
-	if (task) {
-		// Update fields
-		task.title = req.body.title || task.title;
-		task.description = req.body.description || task.description;
-		task.status = req.body.status || task.status;
-		task.dueDate = req.body.dueDate || task.dueDate;
-		task.category = req.body.category || null;
-		task.user = req.body.user || task.user;
+// app.put("/tasks/:id", (req, res) => {
+// 	const task = tasks.find((t) => t.id === req.params.id);
 
-		// Persist changes
-		saveData("tasks.js", tasks);
+// 	if (task) {
+// 		// Update fields
+// 		task.title = req.body.title || task.title;
+// 		task.description = req.body.description || task.description;
+// 		task.status = req.body.status || task.status;
+// 		task.dueDate = req.body.dueDate || task.dueDate;
+// 		task.category = req.body.category || null;
+// 		task.user = req.body.user || task.user;
 
-		res.redirect("/");
-	} else {
-		res.status(404).send("Task not found.");
+// 		// Persist changes
+// 		saveData("tasks.js", tasks);
+
+// 		res.redirect("/");
+// 	} else {
+// 		res.status(404).send("Task not found.");
+// 	}
+// });
+
+app.get("/tasks/:id/edit", async (req, res) => {
+	try {
+		const foundTask = await Task.findById(req.params.id);
+		res.status(200).render("edit-task", { task: foundTask });
+	} catch (err) {
+		res.status(400).send(err);
 	}
 });
 
 // Route to render the Edit Task page
-app.get("/tasks/:id/edit", (req, res) => {
-	console.log("GET /tasks/:id/edit called with ID:", req.params.id); // Log the route call
+// app.get("/tasks/:id/edit", (req, res) => {
+// 	console.log("GET /tasks/:id/edit called with ID:", req.params.id); // Log the route call
 
-	// Find the task with the matching ID
-	const task = tasks.find((t) => t.id === req.params.id);
+// 	// Find the task with the matching ID
+// 	const task = tasks.find((t) => t.id === req.params.id);
 
-	if (task) {
-		// Pass the task, categories, and users arrays to the EJS template
-		res.render("edit-task", { task, categories, users, error: null });
-	} else {
-		console.log(`Task with ID ${req.params.id} not found.`); // Log if no task is found
-		res.status(404).send("Task not found");
-	}
-});
+// 	if (task) {
+// 		// Pass the task, categories, and users arrays to the EJS template
+// 		res.render("edit-task", { task, categories, users, error: null });
+// 	} else {
+// 		console.log(`Task with ID ${req.params.id} not found.`); // Log if no task is found
+// 		res.status(404).send("Task not found");
+// 	}
+// });
 
 // DELETE: Delete a task by ID
 app.delete("/tasks/:id", async (req, res) => {

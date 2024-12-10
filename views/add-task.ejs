@@ -81,11 +81,20 @@
 				<!-- Assign Task to a User -->
 				<div class="mb-3">
 					<label for="user" class="form-label">Assign to User:</label>
-					<select id="user" name="user" class="form-select">
+					<input
+						type="text"
+						id="user"
+						name="user"
+						class="form-control"
+						required
+						minlength="3"
+						maxlength="100"
+					/>
+					<!-- <select id="user" name="user" class="form-select">
 						<option value="">Unassigned</option>
 
 						<option value="ID">Name</option>
-					</select>
+					</select> -->
 				</div>
 
 				<!-- Submit Button -->

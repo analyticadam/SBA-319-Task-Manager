@@ -16,15 +16,8 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Edit Task</h1>
 
-        <!-- Display Error Message (if any) -->
-        <% if (error) { %>
-            <div class="alert alert-danger" role="alert">
-                <%= error %>
-            </div>
-        <% } %>
-
         <!-- Task Edit Form -->
-        <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="mx-auto" style="max-width: 600px;">
+        <form action="/task/<%= task._id %>?_method=PUT" method="POST" class="mx-auto" style="max-width: 600px;">
             <!-- Task Title -->
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -77,23 +70,26 @@
 <div class="mb-3">
     <label for="category" class="form-label">Category</label>
     <select id="category" name="category" class="form-select">
-        <% categories.forEach((category) => { %>
-            <option value="<%= category.id %>" <%= task.category === category.id ? "selected" : "" %>>
-                <%= category.name %>
-            </option>
-        <% }) %>
+        <option value="Personal" <%= task.category === "Personal" ? "selected" : "" %>>Personal</option>
+        <option value="Work" <%= task.category === "Work" ? "selected" : "" %>>Work</option>
+        <option value="Per Scholas Bootcamp" <%= task.category === "Per Scholas Bootcamp" ? "selected" : "" %>>Per Scholas Bootcamp</option>
+
+       
     </select>
 </div>
 
             <!-- Users Category -->
 <label for="user">Assign to User:</label>
-<select id="user" name="user" class="form-select">
-    <% users.forEach((user) => { %>
-        <option value="<%= user.id %>" <%= task.user === user.id ? "selected" : "" %>>
-            <%= user.name %>
-        </option>
-    <% }) %>
-</select>
+<input
+type="text"
+id="user"
+name="user"
+class="form-control"
+value="<%= task.user %>"
+required
+minlength="3"
+maxlength="100"
+/>
 
 
             <!-- Form Buttons -->

@@ -30,16 +30,22 @@
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<div>
 							<!-- Display the task title and status -->
-							<strong><%= Task.title %></strong> - <%= Task.status %><br />
+							<strong>Name:</strong> <%= Task.title %>
+							<br />
+							<strong>Status:</strong> <%= 
+							Task.status %>
 			
 							<!-- Display the category name if the task has a category -->
-							-<%= Task.category  %>
+							<br />
+							<strong>Category: </strong> <%= Task.category  %>
 
 							<!-- Display the Object ID from the MongoDB -->
-							<%= Task._id  %>
+							<br />
+							<strong>Task ID:</strong> <%= Task._id  %>
 			
 							<!-- Display the assigned user's name if the task has a user -->
-								- Assigned to: 
+							<br />
+							<strong>Assigned to:</strong> 
 								<!-- Match the user ID from the task to find the user's name -->
 								<%= Task.user %>
 						</div>

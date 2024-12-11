@@ -6,6 +6,7 @@ const db = require("./db/conn");
 const app = express();
 const PORT = 4242;
 const Task = require("./models/tasks");
+const User = require("./models/users");
 
 // Helper function to save data to a file
 const fs = require("fs");
@@ -57,11 +58,27 @@ app.set("views", path.join(__dirname, "views"));
 // 	res.render("index", { Task }); // Render the main page with the tasks array
 // });
 
-// // Call Users
-// app.get("/users", (req, res) => {
-// 	console.log("GET /users called");
-// 	res.json(users);
-// });
+// Call Users
+app.get("/users", async (req, res) => {
+	const foundUsers = await User.find({});
+	console.log("GET /users called");
+	res.json(foundUsers);
+});
+
+// Call Users
+app.get("/users/seed", async (req, res) => {
+	try {
+		await User.create([
+			{
+				name: "Adam",
+				age: 42,
+			},
+		]);
+	} catch (error) {
+		console.error("Error fetching users:", error.message);
+		res.status(500).send("An error occurred while fetching users.");
+	}
+});
 
 // Get Categories
 app.get("/categories", (req, res) => {
@@ -90,6 +107,7 @@ app.get("/", async (req, res) => {
 	}
 });
 
+// Narrowing index search to find specific ID of task
 // GET: Fetch details of a specific task by ID
 app.get("/tasks/:id", (req, res) => {
 	console.log("GET /tasks/:id called with ID:", req.params.id);

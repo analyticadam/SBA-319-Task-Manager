@@ -12,8 +12,6 @@ A simple task management system that allows users to create, view, edit, and del
 
 ## Setup Instructions
 
-## Setup Instructions
-
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/your-username/repository-name.git

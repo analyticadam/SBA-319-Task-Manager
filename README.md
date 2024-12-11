@@ -16,17 +16,27 @@ A simple task management system that allows users to create, view, edit, and del
    ```bash
    git clone https://github.com/your-username/repository-name.git
    ```
-2. Navigate into the project directory:;
+2. Navigate into the project directory:
+```bash
    cd repository-name
+```
 3. Install dependencies:
+```bash
    npm install
-4. Set Up Environment Variables Create a .env file in the root directory and add your MongoDB connection string:
+```
+5. Set Up Environment Variables Create a .env file in the root directory and add your MongoDB connection string:
+```bash
    MONGO_URI=your-mongodb-connection-string
-5. Run the Application:
+```
+6. Run the Application:
+```bash
    npm start
-6. Open your browser and navigate to http://localhost:4242.
+```
+7. Open your browser and navigate to http://localhost:4242.
    Populate Sample Data Run the seed script to add sample data:
+   ```bash
    node seed.js
+```
 
 ---
 

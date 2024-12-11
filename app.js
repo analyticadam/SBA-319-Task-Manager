@@ -7,6 +7,7 @@ const app = express();
 const PORT = 4242;
 const Task = require("./models/tasks");
 const User = require("./models/users");
+const CompletedTask = require("./models/completedTasks");
 
 // Helper function to save data to a file
 const fs = require("fs");
@@ -80,6 +81,32 @@ app.get("/users/seed", async (req, res) => {
 	}
 });
 
+// CompletedTasks
+app.get("/completedtasks", async (req, res) => {
+	const foundCompletedTasks = await CompletedTask.find({});
+	console.log("GET /completedtasks called");
+	res.json(foundCompletedTasks);
+});
+
+// Call Users
+app.get("/completedtasks/seed", async (req, res) => {
+	try {
+		await CompletedTask.create([
+			{
+				title: "Graduate Per Scholas Software Engineering Bootcamp-Cycle 61",
+				description: "Celebrate Good Times-Come On!",
+				status: "Completed",
+				user: "Adam Farley",
+				dueDate: "2025-01-24T00:00:00.000+00:00",
+				category: "Per Scholas Bootcamp",
+			},
+		]);
+	} catch (error) {
+		console.error("Error fetching completed tasks:", error.message);
+		res.status(500).send("An error occurred while fetching completed tasks.");
+	}
+});
+
 // Get Categories
 app.get("/categories", (req, res) => {
 	console.log("GET /categories called");
@@ -96,7 +123,7 @@ app.get("/tasks/add", (req, res) => {
 app.get("/", async (req, res) => {
 	try {
 		const foundTasks = await Task.find({}); // Fetch all tasks from the Mongo DB
-		console.log(foundTasks, "boogie");
+		console.log(foundTasks);
 		console.log(req.body);
 		console.log(req.params);
 		console.log("GET /tasks called"); // Log the route call

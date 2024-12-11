@@ -36,9 +36,7 @@ A simple task management system that allows users to create, view, edit, and del
    Populate Sample Data Run the seed script to add sample data:
    ```bash
    node seed.js
-```
 
----
 
 ### API Documentation
 
